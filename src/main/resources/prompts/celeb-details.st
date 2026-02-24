@@ -1,0 +1,1 @@
+List of details of the famous personality {name} along with their carrie achievements show the details in the readable format
