@@ -1,4 +1,4 @@
-package FirstAI.SpringAI.entity;
+package com.java.ai.entity;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
