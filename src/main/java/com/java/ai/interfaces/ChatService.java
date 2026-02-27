@@ -1,6 +1,6 @@
 package com.java.ai.interfaces;
 
-import com.java.ai.entity.Tut;
+ import com.java.ai.entity.Tut;
 
 public interface ChatService {
 
