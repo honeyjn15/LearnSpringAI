@@ -16,14 +16,14 @@ public class AiConfig {
 
 
     @Bean("customAdvisor")
-    public ChatClient customchatClient(ChatClient.Builder chatClient) {
+    public ChatClient tokenAdvisorChatClient(ChatClient.Builder chatClient) {
         return chatClient
-                .defaultAdvisors(new TokenPrintAdvisor(), new SimpleLoggerAdvisor() )
+                .defaultAdvisors(new TokenPrintAdvisor() )
                 .defaultSystem("you are helpful coding assistant")
                 .defaultOptions(OpenAiChatOptions.builder()
                         .model("gpt-4o-mini")
                         .temperature(0.3)
-                        .maxTokens(200)
+                        .maxTokens(20)
                         .build()).build();
     }
 
@@ -38,7 +38,7 @@ public class AiConfig {
                 .defaultOptions(OpenAiChatOptions.builder()
                         .model("gpt-4o-mini")
                         .temperature(0.3)
-                        .maxTokens(200)
+                        .maxTokens(20)
                         .build())
                 .build();
     }

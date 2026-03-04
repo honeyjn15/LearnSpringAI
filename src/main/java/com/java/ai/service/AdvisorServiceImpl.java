@@ -23,19 +23,19 @@ public class AdvisorServiceImpl implements AdvisorService {
     private Resource systemMessage;
 
     private final ChatClient customTokenAdvisorChatClient;
-    private final ChatClient normalChatClient;
+    private final ChatClient basicChatClient;
 
     public AdvisorServiceImpl(@Qualifier("customAdvisor") ChatClient customTokenAdvisorChatClient,
-                              @Qualifier("normalChatClient") ChatClient normalChatClient) {
+                              @Qualifier("normalChatClient") ChatClient basicChatClient) {
         this.customTokenAdvisorChatClient = customTokenAdvisorChatClient;
-        this.normalChatClient = normalChatClient;
+        this.basicChatClient = basicChatClient;
     }
 
     //you are calling system message and user message from normal chatClient. So you can call either
     //from Config class or in service class depending on the requirement
     @Override
     public String simpleLoggerAdvisor() {
-        return this.normalChatClient
+        return this.basicChatClient
                 .prompt()
                 .system(system -> system.text(this.systemMessage))
                 .user(user -> user.text(this.userMessage))
@@ -48,7 +48,7 @@ public class AdvisorServiceImpl implements AdvisorService {
     //and method level also by defining in service layer
     @Override
     public String safeGuardAdvisor(String q) {
-        return this.normalChatClient
+        return this.basicChatClient
                 .prompt(q)
                 .advisors(new SafeGuardAdvisor(List.of("game")))
                 .call()

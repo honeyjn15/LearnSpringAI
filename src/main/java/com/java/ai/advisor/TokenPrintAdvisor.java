@@ -19,8 +19,12 @@ public class TokenPrintAdvisor implements StreamAdvisor, CallAdvisor {
     @Override
     public ChatClientResponse adviseCall(ChatClientRequest chatClientRequest, CallAdvisorChain callAdvisorChain) {
         this.logger.info("TokenAdvisor is called");
+        this.logger.info("Request" + chatClientRequest.prompt().getContents());
         org.springframework.ai.chat.client.ChatClientResponse chatClientResponse = callAdvisorChain.nextCall(chatClientRequest);
         this.logger.info("response received from the model");
+        this.logger.info("Request from the prompt : " +chatClientResponse.chatResponse().getMetadata().getUsage().getPromptTokens());
+        this.logger.info("Completion prompt : " +chatClientResponse.chatResponse().getMetadata().getUsage().getCompletionTokens());
+        this.logger.info("Complete Response and total count: " +chatClientResponse.chatResponse().getMetadata().getUsage().getTotalTokens());
 
         return chatClientResponse;
     }
