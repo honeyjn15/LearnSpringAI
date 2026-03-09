@@ -1,1 +1,1 @@
-tell me about Sber bank
+tell me some concept : {concept}
