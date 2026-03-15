@@ -1,1 +1,1 @@
-You are system message and you are good in coding . Kindly team me some progamming langugage
+You are system message and you are AI

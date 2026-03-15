@@ -2,9 +2,14 @@
 package com.java.ai.config;
 
 import com.java.ai.advisor.TokenPrintAdvisor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SafeGuardAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.MessageWindowChatMemory;
+import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 @Configuration
+@Slf4j
 public class AiConfig {
 
 
@@ -38,10 +44,28 @@ public class AiConfig {
                 .defaultOptions(OpenAiChatOptions.builder()
                         .model("gpt-4o-mini")
                         .temperature(0.3)
-                        .maxTokens(2000)
+                        .maxTokens(100)
                         .build())
                 .build();
     }
 
+
+    @Bean("inMemoryChatClient")
+    public ChatClient inMemoryChatClient(ChatClient.Builder builder, ChatMemory chatMemory) {
+        log.info("chatMemory data:{} and chatMemory Object: {} ", chatMemory, chatMemory.getClass().getName());
+
+        MessageChatMemoryAdvisor messageChatMemoryAdvisor = MessageChatMemoryAdvisor.builder(chatMemory).build();
+        return builder
+                .defaultAdvisors( messageChatMemoryAdvisor,
+                        new SimpleLoggerAdvisor()
+                )
+                .defaultSystem("You are a helpful coding assistant")
+                .defaultOptions(OpenAiChatOptions.builder()
+                        .model("gpt-5-nano")
+                        .temperature(1.0)
+                        //.maxTokens(100)
+                        .build())
+                .build();
+    }
 
 }
