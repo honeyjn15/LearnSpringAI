@@ -2,6 +2,7 @@ package com.java.ai.service;
 
 import com.java.ai.interfaces.InMemoryService;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -25,9 +26,7 @@ public class InMemoryServiceImpl implements InMemoryService {
 
     @Override
     public String inMemory(String q) {
-
-        return
-                this.chatClient
+        return this.chatClient
                         .prompt(q)
                         .system(promptSystemSpec -> promptSystemSpec.text(this.systemMessageFileReader))
                         .user(promptUserSpec -> promptUserSpec.text(this.userMessageFileReader)
@@ -35,5 +34,17 @@ public class InMemoryServiceImpl implements InMemoryService {
                         .call()
                         .content();
 
+    }
+
+    @Override
+    public String inMemoryViaConversationId(String q, String userId) {
+        return this.chatClient
+                .prompt(q)
+                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, userId))
+                .system(promptSystemSpec -> promptSystemSpec.text(this.systemMessageFileReader))
+                .user(promptUserSpec -> promptUserSpec.text(this.userMessageFileReader)
+                        .param("concept" , q))
+                .call()
+                .content();
     }
 }

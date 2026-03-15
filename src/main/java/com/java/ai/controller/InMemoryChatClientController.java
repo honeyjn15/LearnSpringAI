@@ -3,10 +3,7 @@ package com.java.ai.controller;
 import com.java.ai.interfaces.InMemoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping
@@ -22,6 +19,14 @@ public class InMemoryChatClientController {
         return ResponseEntity.ok(response);
     }
 
+
+
+    @GetMapping("/conversation")
+    public ResponseEntity<String> inMemoryChatClientViaConversationId(@RequestParam(value = "q") String q,
+        @RequestHeader("userId") String userId) {
+        var response = inMemoryService.inMemoryViaConversationId(q, userId);
+        return ResponseEntity.ok(response);
+    }
 
 
 }
